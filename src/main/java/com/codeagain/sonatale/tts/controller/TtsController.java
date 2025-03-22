@@ -44,7 +44,7 @@ public class TtsController {
         List<String> keywords = audioService.extractKeywords(fullText);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("keywords", keywords); // 배열로 반환
+        response.put("keywords", keywords);
 
         return ResponseEntity.ok(response);
     }

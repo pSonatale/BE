@@ -39,7 +39,7 @@ public class AudioService {
     }
 
     public List<String> extractKeywords(String fullText) {
-        List<String> keywords = List.of("행복", "슬퍼", "신나");
+        List<String> keywords = List.of("행복", "슬퍼", "신나","잠와");
         String lowerText = fullText.toLowerCase();
 
         List<String> result = new ArrayList<>();
