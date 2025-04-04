@@ -28,6 +28,7 @@ public class TtsController {
                 .header(HttpHeaders.CONTENT_TYPE, "audio/mp4")
                 .body(audio);
     }
+
     @GetMapping("/list")
     public ResponseEntity<Map<String, String>> getAudioList() {
         Map<String, String> audioList = audioService.getAudioMap();
@@ -36,12 +37,13 @@ public class TtsController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadAudio(@RequestParam String text,
-                                              @RequestParam MultipartFile file) {
-        boolean result = audioService.saveAudioFile(text, file);
+                                              @RequestParam MultipartFile file,
+                                              @RequestParam(required = false) MultipartFile image) {
+        boolean result = audioService.saveAudioAndImage(text, file, image);
         if (result) {
-            return ResponseEntity.ok("{\"message\": \"음원이 성공적으로 등록되었습니다.\"}");
+            return ResponseEntity.ok("{\"message\": \"음원과 이미지가 성공적으로 등록되었습니다.\"}");
         }
-        return ResponseEntity.badRequest().body("{\"message\": \"파일 업로드 실패\"}");
+        return ResponseEntity.badRequest().body("{\"message\": \"업로드 실패\"}");
     }
 
     @PostMapping("/analyze")
@@ -53,5 +55,4 @@ public class TtsController {
 
         return ResponseEntity.ok(response);
     }
-
 }
