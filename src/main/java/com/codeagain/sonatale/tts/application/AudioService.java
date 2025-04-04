@@ -25,6 +25,11 @@ public class AudioService {
         return new ClassPathResource(filePath);
     }
 
+    public Map<String, String> getAudioMap() {
+        return Collections.unmodifiableMap(audioMap);
+    }
+
+
     public boolean saveAudioFile(String text, MultipartFile file) {
         try {
             String path = "src/main/resources/static/" + text + ".m4a";

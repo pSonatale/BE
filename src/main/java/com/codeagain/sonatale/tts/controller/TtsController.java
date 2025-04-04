@@ -28,6 +28,11 @@ public class TtsController {
                 .header(HttpHeaders.CONTENT_TYPE, "audio/mp4")
                 .body(audio);
     }
+    @GetMapping("/list")
+    public ResponseEntity<Map<String, String>> getAudioList() {
+        Map<String, String> audioList = audioService.getAudioMap();
+        return ResponseEntity.ok(audioList);
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadAudio(@RequestParam String text,
