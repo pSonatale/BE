@@ -13,8 +13,8 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/tts/**").permitAll()  // ✅ 이 경로는 인증 없이 허용
-                .anyRequest().authenticated(); // 나머지는 인증 필요
+                .requestMatchers("/tts/**").permitAll()
+                .anyRequest().authenticated();
 
         return http.build();
     }
