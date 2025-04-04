@@ -13,6 +13,7 @@ import java.util.*;
 public class AudioService {
 
     private final Map<String, String> audioMap = new HashMap<>();
+    private final Map<String, String> imageMap = new HashMap<>();
 
     public AudioService() {
         audioMap.put("hi", "static/a1.m4a");
@@ -29,14 +30,28 @@ public class AudioService {
         return Collections.unmodifiableMap(audioMap);
     }
 
+    public Map<String, String> getImageMap() {
+        return Collections.unmodifiableMap(imageMap);
+    }
 
-    public boolean saveAudioFile(String text, MultipartFile file) {
+    public boolean saveAudioAndImage(String text, MultipartFile audioFile, MultipartFile imageFile) {
         try {
-            String path = "src/main/resources/static/" + text + ".m4a";
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                fos.write(file.getBytes());
+            String audioPath = "src/main/resources/static/" + text + ".m4a";
+            try (FileOutputStream fos = new FileOutputStream(audioPath)) {
+                fos.write(audioFile.getBytes());
             }
             audioMap.put(text.toLowerCase(), "static/" + text + ".m4a");
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String ext = Objects.requireNonNull(imageFile.getOriginalFilename())
+                        .substring(imageFile.getOriginalFilename().lastIndexOf('.'));
+                String imagePath = "src/main/resources/static/" + text + ext;
+                try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+                    fos.write(imageFile.getBytes());
+                }
+                imageMap.put(text.toLowerCase(), "static/" + text + ext);
+            }
+
             return true;
         } catch (IOException e) {
             return false;
@@ -44,7 +59,7 @@ public class AudioService {
     }
 
     public List<String> extractKeywords(String fullText) {
-        List<String> keywords = List.of("행복", "슬퍼", "신나","잠와");
+        List<String> keywords = List.of("행복", "슬퍼", "신나", "잠와");
         String lowerText = fullText.toLowerCase();
 
         List<String> result = new ArrayList<>();
@@ -72,5 +87,4 @@ public class AudioService {
 
         return result;
     }
-
 }
